@@ -3,7 +3,7 @@ package com.kitchen
 import grails.plugin.spock.IntegrationSpec
 
 import com.google.protobuf.DescriptorProtos.FieldDescriptorProto.Type;
-import com.kitchen.exception.IngredientNotAvailableException
+import com.kitchen.exception.*
 
 class ChefServiceIntegrationSpec extends IntegrationSpec {
 
@@ -49,6 +49,6 @@ class ChefServiceIntegrationSpec extends IntegrationSpec {
         def meal = chefService.cook(recipe)
 
         then:
-        thrown(IngredientNotAvailableException)
+        thrown(RecipeNotAvailableException)
     }
 }

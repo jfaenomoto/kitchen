@@ -35,12 +35,21 @@ class RecipeSpec extends Specification {
     }
     
     def 'check added ingredients are on recipe'() {
-        //        given:
-        //
-        //        when:
-        //
-        //        then:
-        //
-        //        and:
+        given:
+        def pao = new Ingredient(name : "Pao", type : IngredientType.ANIMAL_DERIVATIVE)
+        def eggs = new Ingredient(name : "Eggs", type : IngredientType.ANIMAL_DERIVATIVE)
+        def paoComOvo = new Recipe()
+
+        when:
+        paoComOvo.addIngredient(pao)
+
+        then:
+        paoComOvo.ingredients.contains(pao)
+        
+        when:
+        paoComOvo.addIngredient(eggs)
+
+        then:
+        paoComOvo.ingredients.contains(eggs)
     }
 }

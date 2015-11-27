@@ -4,7 +4,7 @@ import grails.test.mixin.TestFor
 
 import spock.lang.Specification
 
-import com.kitchen.exception.IngredientNotAvailableException
+import com.kitchen.exception.*
 
 /**
  * See the API for {@link grails.test.mixin.services.ServiceUnitTestMixin} for usage instructions
@@ -30,10 +30,20 @@ class ChefServiceSpec extends Specification {
 
     def 'cook a recipe'() {
         given:
-        def recipe = new Recipe(name : "Tiramisu", ingredients : [
+        def ingredients = [
+            new Ingredient(),
+            new Ingredient(),
+            new Ingredient(),
+            new Ingredient(),
+            new Ingredient(),
+            new Ingredient(),
+            new Ingredient(),
+            new Ingredient(),
+            new Ingredient(),
             new Ingredient(),
             new Ingredient()
-        ])
+        ]
+        def recipe = new Recipe(name : "Frangão", ingredients : ingredients)
         service.kitchenStorageService.grab(_) >> new Ingredient()
 
         when:
@@ -41,10 +51,10 @@ class ChefServiceSpec extends Specification {
 
         then:
         assert meal != null
-        assert meal.name == "Tiramisu"
-        
+        assert meal.name == "Frangão"
+
         and:
-        2 * service.knifeService.cut(_)
+        ingredients.size() * service.knifeService.cut(_)
     }
 
     def 'what happens when an ingredient is not available?'() {
@@ -53,13 +63,15 @@ class ChefServiceSpec extends Specification {
             new Ingredient(),
             new Ingredient()
         ])
-        service.kitchenStorageService.grab(_) >> { throw new IngredientNotAvailableException() }
+        service.kitchenStorageService.grab(_) >> {
+            throw new IngredientNotAvailableException()
+        }
 
         when:
         service.cook(recipe)
 
         then:
-        thrown(IngredientNotAvailableException)
+        thrown(RecipeNotAvailableException)
     }
 
     def setup() {

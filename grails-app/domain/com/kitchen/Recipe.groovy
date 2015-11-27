@@ -26,6 +26,9 @@ class Recipe {
     }
 
     def addIngredient(Ingredient ingredient) {
+        if (this.ingredients == null) {
+            this.ingredients = []
+        }
         this.ingredients.add(ingredient)
     }
 }
